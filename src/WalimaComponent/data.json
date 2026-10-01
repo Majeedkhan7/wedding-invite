@@ -1,0 +1,57 @@
+{
+  "bride": {
+    "firstName": "Kareem",
+    "lastName": "Farwin"
+  },
+  "groom": {
+    "firstName": "Farwin",
+    "lastName": "Rahman"
+  },
+  "audioUrl": "/music/wedding-music.mp3",
+  "event": {
+    "isoDate": "2026-12-20T18:00:00Z",
+    "date": "December 20th, 2026",
+    "day": "Sunday Evening",
+    "time": "6:00 PM",
+    "arrivalTime": "5:30 PM",
+    "venue": "The Grand Orchid Pavilion",
+    "address": "123 Elegance Boulevard, Floral City",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.95373531590403!3d-37.81732767975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sus!4v1611815523991!5m2!1sen!2sus",
+    "giftPreference": "Your presence is our most cherished gift. Should you wish to bless us further, a monetary gift to help us build our future would be deeply appreciated."
+  },
+  "timeline": [
+    {
+      "time": "6:00 PM",
+      "title": "Welcome Reception",
+      "description": "Guests arrive and are escorted to the pavilion."
+    },
+    {
+      "time": "7:00 PM",
+      "title": "Entrance of the Couple",
+      "description": "Kareem & Farwin make their grand entrance."
+    },
+    {
+      "time": "7:30 PM",
+      "title": "The Walima Feast",
+      "description": "A celebratory dinner is served."
+    },
+    {
+      "time": "9:00 PM",
+      "title": "Du'a & Toasts",
+      "description": "Prayers for the couple and warm words."
+    },
+    {
+      "time": "10:30 PM",
+      "title": "Farewell",
+      "description": "Concluding a beautiful evening."
+    }
+  ],
+  "gallery": [
+    "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1920&q=80",
+    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1510076857177-7470076d4098?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80"
+  ]
+}

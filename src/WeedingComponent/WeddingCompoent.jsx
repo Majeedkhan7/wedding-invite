@@ -288,7 +288,7 @@ export default function WeddingCompoent() {
   };
 
   return (
-    <>
+    <div className="wedding-page">
       <audio ref={audioRef} src="/music/wedding-music.mp3" loop preload="auto" />
 
       {!opened && <EnvelopeIntro onOpen={openInvitation} />}
@@ -503,6 +503,6 @@ export default function WeddingCompoent() {
 
         <button className="floating-share" onClick={shareInvitation} aria-label="Share">↗</button>
       </div>
-    </>
+    </div>
   );
 }
