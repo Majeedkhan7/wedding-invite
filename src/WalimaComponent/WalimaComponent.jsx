@@ -250,15 +250,15 @@ export default function ElegantWalima() {
         <section className="section">
           <RevealOnScroll className="section-header">
             <p className="sans-sub">Moments</p>
-            <h2 className="serif-heading">Our Beautiful Journey</h2>
+            <h2 className="serif-heading">The Groom's Gallery</h2>
           </RevealOnScroll>
           
           <RevealOnScroll>
             <div className="gallery-grid">
               <div className="gal-item gal-1"><img src={walimaData.gallery[2]} className="gal-img" alt="Couple" loading="lazy" /></div>
-              <div className="gal-item gal-2"><img src={walimaData.gallery[4]} className="gal-img" alt="Decor" loading="lazy" /></div>
-              <div className="gal-item gal-3"><img src={walimaData.gallery[5]} className="gal-img" alt="Details" loading="lazy" /></div>
-              <div className="gal-item gal-4"><img src={walimaData.gallery[1]} className="gal-img" alt="Rings" loading="lazy" /></div>
+              <div className="gal-item gal-2"><img src={walimaData.gallery[3]} className="gal-img" alt="Decor" loading="lazy" /></div>
+              <div className="gal-item gal-3"><img src={walimaData.gallery[1]} className="gal-img" alt="Details" loading="lazy" /></div>
+              <div className="gal-item gal-4"><img src={walimaData.gallery[2]} className="gal-img" alt="Rings" loading="lazy" /></div>
             </div>
           </RevealOnScroll>
         </section>

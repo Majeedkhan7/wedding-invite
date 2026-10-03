@@ -441,11 +441,14 @@ export default function WeddingCompoent() {
             <h2 className="script">A Glimpse of Love</h2>
           </RevealOnScroll>
           <div className="gallery-grid">
-            {weddingData.gallery.map((image, index) => (
+            {weddingData.gallery.map((image, index) => {
+              if(index === 0) return;
+              return(
               <RevealOnScroll key={index} delay={index * 100}>
                 <img src={image} alt={`Wedding memory ${index + 1}`} loading="lazy" />
               </RevealOnScroll>
-            ))}
+              )
+            })}
           </div>
         </section>
 
