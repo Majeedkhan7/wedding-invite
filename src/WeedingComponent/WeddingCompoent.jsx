@@ -425,14 +425,8 @@ export default function WeddingCompoent() {
         </section>
 
         {/* SPLIT SECTION (DRESS/GIFT) */}
-        <section className="split-section">
-          <RevealOnScroll className="split-card dress">
-            <p className="eyebrow">What to Wear</p>
-            <h2 className="script">Dress Code</h2>
-            <div className="dress-swatches"><span /><span /><span /><span /></div>
-            <p>{weddingData.event.dressCode}</p>
-          </RevealOnScroll>
-          <RevealOnScroll className="split-card gift" delay={150}>
+        <section className="gift-section">
+          <RevealOnScroll className="split-card gift">
             <p className="eyebrow">With Love</p>
             <h2 className="script">Gift Preference</h2>
             <div className="gift-icon">♡</div>
