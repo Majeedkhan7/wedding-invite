@@ -1,5 +1,6 @@
 import React, {useEffect,useMemo,useRef,useState,} from "react";
 import "./wedding-compoent.css";
+import "./premium-envelope-intro.css";
 
 /* =========================================================
    IMPORT DATA FROM JSON
@@ -174,39 +175,121 @@ function Countdown() {
    ENVELOPE INTRO
 ========================================================= */
 function EnvelopeIntro({ onOpen }) {
-  const [opening, setOpening] = useState(false);
+  const [stage, setStage] = useState(0);
+
   const handleOpen = () => {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(() => { onOpen(); }, 1500);
+    if (stage !== 0) return;
+    setStage(1);
+    window.setTimeout(() => setStage(2), 520);
+    window.setTimeout(() => setStage(3), 1150);
+    window.setTimeout(() => setStage(4), 2050);
+    window.setTimeout(() => onOpen(), 2850);
   };
 
+  const initialA = weddingData.bride.firstName[0];
+  const initialB = weddingData.groom.firstName[0];
+
   return (
-    <div className={`envelope-screen ${opening ? "is-opening-screen" : ""}`}>
-      <div className="envelope-glow" />
-      <div className={`intro-copy ${opening ? "fade-out" : ""}`}>
-        <p>YOU ARE INVITED</p>
-        <h1>{weddingData.bride.firstName} <span>&</span> {weddingData.groom.firstName}</h1>
-        <small>{weddingData.event.date.split(" ").join(" · ")}</small>
+    <div className={`luxury-intro stage-${stage}`}>
+      <div className="luxury-intro-bg">
+        <div className="luxury-halo halo-one" />
+        <div className="luxury-halo halo-two" />
+        <div className="luxury-grid" />
+        <div className="luxury-dust">
+          <span /><span /><span /><span /><span /><span /><span /><span />
+        </div>
       </div>
 
-      <button className={`envelope ${opening ? "opening" : ""}`} onClick={handleOpen} disabled={opening}>
-        <div className="envelope-paper">
-          <div className="paper-content">
-            <span>THE WEDDING OF</span>
-            <h2>{weddingData.bride.firstName}</h2><i>&</i><h2>{weddingData.groom.firstName}</h2>
-            <b>SCRATCH & DISCOVER</b>
-          </div>
+      <div className="luxury-heading">
+        <span className="luxury-overline">A private invitation</span>
+        <div className="luxury-names">
+          <span>{weddingData.bride.firstName}</span>
+          <b>&amp;</b>
+          <span>{weddingData.groom.firstName}</span>
         </div>
-        <div className="envelope-back" />
-        <div className="envelope-flap" />
-        <div className="envelope-front" />
-        <div className="wax-seal">{weddingData.bride.firstName[0]} <span>&</span> {weddingData.groom.firstName[0]}</div>
+        <div className="luxury-rule"><i /><span>✦</span><i /></div>
+        <small>{weddingData.event.date}</small>
+      </div>
+
+      <button
+        type="button"
+        className="luxury-envelope"
+        onClick={handleOpen}
+        disabled={stage > 0}
+        aria-label="Open wedding invitation"
+      >
+        <span className="luxury-envelope-shadow" />
+        <span className="luxury-envelope-wrap">
+          <span className="luxury-letter">
+            <span className="luxury-letter-inner">
+              <small>THE WEDDING OF</small>
+              <strong>{weddingData.bride.firstName}</strong>
+              <em>&amp;</em>
+              <strong>{weddingData.groom.firstName}</strong>
+              <span className="luxury-letter-date">{weddingData.event.date}</span>
+              <span className="luxury-letter-ornament">❦</span>
+            </span>
+          </span>
+          <span className="luxury-envelope-back">
+            <span className="envelope-edge edge-top" />
+            <span className="envelope-edge edge-left" />
+            <span className="envelope-edge edge-right" />
+          </span>
+          <span className="luxury-inner-lining"><span>❦</span></span>
+          <span className="luxury-pocket">
+            <span className="pocket-left" />
+            <span className="pocket-right" />
+            <span className="pocket-bottom" />
+          </span>
+          <span className="luxury-flap">
+            <span className="flap-paper" />
+            <span className="flap-edge" />
+          </span>
+          <span className="luxury-wax">
+            <span className="wax-drip drip-one" />
+            <span className="wax-drip drip-two" />
+            <span className="wax-drip drip-three" />
+            <span className="wax-inner">
+              <b>{initialA}<i>&amp;</i>{initialB}</b>
+              <small>✦</small>
+            </span>
+          </span>
+          <span className="seal-fragments"><i /><i /><i /><i /><i /><i /></span>
+          <span className="luxury-fold fold-left" />
+          <span className="luxury-fold fold-right" />
+        </span>
+        <span className="envelope-hint">
+          <span className="hint-line" />
+          <span>Tap the seal</span>
+          <span className="hint-line" />
+        </span>
       </button>
 
-      <button className={`tap-open ${opening ? "fade-out" : ""}`} onClick={handleOpen} disabled={opening}>
-        <span className="tap-icon">✦</span>Tap to open invitation
-      </button>
+      <div className="rising-invitation" aria-hidden={stage < 3}>
+        <div className="rising-invitation-paper">
+          <div className="rising-top-ornament">✦</div>
+          <span className="rising-kicker">THE WEDDING INVITATION</span>
+          <h2>
+            {weddingData.bride.firstName}
+            <span>&amp;</span>
+            {weddingData.groom.firstName}
+          </h2>
+          <div className="rising-divider"><i /><b>❦</b><i /></div>
+          <p>We joyfully invite you to celebrate with us</p>
+          <strong>{weddingData.event.date}</strong>
+          <span className="rising-location">
+            {weddingData.event.venue}
+          </span>
+          <div className="rising-bottom-ornament">❦</div>
+        </div>
+      </div>
+
+      <div className="luxury-bottom-note">
+        <span>With love</span><i>•</i><span>You are invited</span>
+      </div>
+
+      <div className="luxury-reveal-light" />
+      <div className="luxury-whiteout" />
     </div>
   );
 }
