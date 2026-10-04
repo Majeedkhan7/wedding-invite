@@ -30,39 +30,221 @@ function RevealOnScroll({ children, className = "", delay = 0 }) {
 }
 
 function ModernRevealCard({ icon, title, mainText, subText }) {
-  const [isActive, setIsActive] = useState(false);
-
   return (
-    <div 
-      className={`mrc-card ${isActive ? "is-active" : ""}`}
-      onClick={() => setIsActive(!isActive)}
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-    >
-      <div className="mrc-glow"></div>
-      
-      <div className="mrc-content-front">
-        <div className="mrc-icon">{icon}</div>
-        <h3 className="mrc-title">{title}</h3>
-        <p className="mrc-hint">Hover or Tap to Reveal</p>
-      </div>
-      
-      <div className="mrc-content-back">
-        <div className="mrc-main-text">{mainText}</div>
-        <div className="mrc-sub-text">{subText}</div>
-      </div>
-    </div>
+    <article className="event-card-premium">
+      <div className="event-card-orbit" />
+      <div className="event-card-icon">{icon}</div>
+      <p className="event-card-kicker">{title}</p>
+      <h3>{mainText}</h3>
+      <p>{subText}</p>
+      <span className="event-card-line" />
+    </article>
   );
 }
 
-function Countdown() {
-  const target = useMemo(() => new Date(walimaData.event.isoDate), []);
-  const [left, setLeft] = useState(Math.max(0, target.getTime() - new Date().getTime()));
+function SecretEventReveal() {
+  const details = [
+    { key: "date", icon: "✿", label: "THE DATE", title: walimaData.event.date, text: walimaData.event.day },
+    { key: "time", icon: "☽", label: "THE TIME", title: walimaData.event.time, text: `Arrival by ${walimaData.event.arrivalTime}` },
+    { key: "venue", icon: "✧", label: "THE VENUE", title: walimaData.event.venue, text: walimaData.event.address },
+  ];
+
+  return (
+    <section id="details" className="section secret-scratch-section">
+      <RevealOnScroll className="secret-scratch-shell">
+        <div className="secret-lock-heading">
+          <span className="secret-lock-eyebrow">THE DETAILS</span>
+          <h2 className="serif-heading">When &amp; Where</h2>
+          <p>Scratch each little secret to discover the details, one by one.</p>
+        </div>
+
+        <div className="secret-scratch-grid">
+          {details.map((item, index) => (
+            <ScratchRevealCard key={item.key} item={item} index={index} />
+          ))}
+        </div>
+
+        <div className="scratch-footer-note">
+          <span></span>
+          <p>Scratch gently across each card</p>
+          <span></span>
+        </div>
+      </RevealOnScroll>
+    </section>
+  );
+}
+
+function ScratchRevealCard({ item, index }) {
+  const canvasRef = useRef(null);
+  const cardRef = useRef(null);
+  const [revealed, setRevealed] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const drawingRef = useRef(false);
+  const lastPointRef = useRef(null);
+  const scratchedRef = useRef(0);
+
+  const setupCanvas = () => {
+    const canvas = canvasRef.current;
+    const card = cardRef.current;
+    if (!canvas || !card || revealed) return;
+
+    const rect = card.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+    gradient.addColorStop(0, "#6d3c50");
+    gradient.addColorStop(0.5, "#a85d7a");
+    gradient.addColorStop(1, "#704257");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, rect.width, rect.height);
+
+    ctx.fillStyle = "rgba(255,255,255,.08)";
+    for (let x = -rect.height; x < rect.width + rect.height; x += 26) {
+      ctx.save();
+      ctx.translate(x, 0);
+      ctx.rotate(-0.55);
+      ctx.fillRect(0, -rect.height, 8, rect.height * 2.4);
+      ctx.restore();
+    }
+
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.globalAlpha = 1;
+    scratchedRef.current = 0;
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setLeft(Math.max(0, target.getTime() - new Date().getTime()));
-    }, 1000);
+    setupCanvas();
+    const onResize = () => setupCanvas();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [revealed]);
+
+  const pointFromEvent = (event) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const source = event.touches ? event.touches[0] : event;
+    return { x: source.clientX - rect.left, y: source.clientY - rect.top };
+  };
+
+  const scratch = (event) => {
+    if (!drawingRef.current || revealed) return;
+    event.preventDefault();
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const point = pointFromEvent(event);
+    const previous = lastPointRef.current || point;
+    const distance = Math.hypot(point.x - previous.x, point.y - previous.y);
+
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 42;
+    ctx.beginPath();
+    ctx.moveTo(previous.x, previous.y);
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+    ctx.restore();
+    lastPointRef.current = point;
+    scratchedRef.current += Math.max(distance, 3);
+
+    if (scratchedRef.current > canvas.width * 0.72) {
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let transparent = 0;
+      for (let i = 3; i < data.length; i += 32) {
+        if (data[i] < 35) transparent++;
+      }
+      const sampled = data.length / 128;
+      if (transparent / sampled > 0.38 && !clearing) {
+        setClearing(true);
+        window.setTimeout(() => setRevealed(true), 720);
+      }
+    }
+  };
+
+  const startScratch = (event) => {
+    if (revealed) return;
+    drawingRef.current = true;
+    lastPointRef.current = pointFromEvent(event);
+    scratch(event);
+  };
+
+  const stopScratch = () => {
+    drawingRef.current = false;
+    lastPointRef.current = null;
+  };
+
+  return (
+    <article ref={cardRef} className={`scratch-detail-card ${revealed ? "is-revealed" : ""} ${clearing ? "is-clearing" : ""}`}>
+      <div className="scratch-card-content">
+        <span className="scratch-detail-icon">{item.icon}</span>
+        <p className="event-card-kicker">{item.label}</p>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </div>
+
+      {!revealed && (
+        <canvas
+          ref={canvasRef}
+          className={`scratch-cover-canvas ${clearing ? "is-clearing" : ""}`}
+          onMouseDown={startScratch}
+          onMouseMove={scratch}
+          onMouseUp={stopScratch}
+          onMouseLeave={stopScratch}
+          onTouchStart={startScratch}
+          onTouchMove={scratch}
+          onTouchEnd={stopScratch}
+          aria-label={`Scratch to reveal ${item.label.toLowerCase()}`}
+        />
+      )}
+
+      {!revealed && (
+        <div className={`scratch-cover-label ${clearing ? "is-clearing" : ""}`} aria-hidden="true">
+          <div className="scratch-lock-ring">{index + 1}</div>
+          <strong>SCRATCH TO REVEAL</strong>
+          <small>{item.label}</small>
+        </div>
+      )}
+    </article>
+  );
+}
+
+function SurpriseMoment() {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <section className="section surprise-section">
+      <RevealOnScroll className="surprise-card">
+        <span className="surprise-sparkle">✦</span>
+        <p className="sans-sub">A Little Surprise</p>
+        <h2 className="serif-heading">Something Special For You</h2>
+        <p className="surprise-intro">Before you continue, there is a small message waiting just for our cherished guests.</p>
+        <button className={`surprise-button ${revealed ? "revealed" : ""}`} onClick={() => setRevealed(true)} disabled={revealed}>
+          {revealed ? "With Love & Gratitude" : "Open Your Surprise"}
+        </button>
+        <div className={`surprise-message ${revealed ? "show" : ""}`} aria-live="polite">
+          <span>❦</span>
+          <p>Your presence, prayers, and warm wishes are the most beautiful gift we could receive.</p>
+          <strong>{walimaData.bride.firstName} &amp; {walimaData.groom.firstName}</strong>
+        </div>
+      </RevealOnScroll>
+    </section>
+  );
+}
+
+
+
+function Countdown() {
+  const target = useMemo(() => new Date(walimaData.event.isoDate), []);
+  const [left, setLeft] = useState(Math.max(0, target.getTime() - Date.now()));
+
+  useEffect(() => {
+    const timer = setInterval(() => setLeft(Math.max(0, target.getTime() - Date.now())), 1000);
     return () => clearInterval(timer);
   }, [target]);
 
@@ -74,13 +256,17 @@ function Countdown() {
   ];
 
   return (
-    <div className="countdown-wrapper">
-      {parts.map(([label, num]) => (
-        <div className="count-box" key={label}>
-          <span className="count-num">{String(num).padStart(2, "0")}</span>
-          <span className="sans-sub" style={{letterSpacing: '0.1em'}}>{label}</span>
-        </div>
-      ))}
+    <div className="countdown-premium-wrap">
+      <div className="countdown-glow" />
+      <div className="countdown-wrapper countdown-premium">
+        {parts.map(([label, num]) => (
+          <div className="count-box count-box-premium" key={label}>
+            <span className="count-num" key={`${label}-${num}`}>{String(num).padStart(2, "0")}</span>
+            <span className="sans-sub">{label}</span>
+          </div>
+        ))}
+      </div>
+      <p className="countdown-caption">Until we gather together in joy</p>
     </div>
   );
 }
@@ -119,6 +305,7 @@ export default function ElegantWalima() {
   const [isOpened, setIsOpened] = useState(false);
   const [rsvpSent, setRsvpSent] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -175,15 +362,27 @@ export default function ElegantWalima() {
 
       <div className={`main-content ${isOpened ? "visible" : ""}`}>
         
-        <nav className="navbar-glass-pill">
-          <a href="#" className="nav-brand" onClick={(e) => { e.preventDefault(); window.scrollTo(0,0); }}>
-            {walimaData.bride.firstName[0]} <span>&amp;</span> {walimaData.groom.firstName[0]}
+        <nav className={`navbar-glass-pill navbar-premium ${menuOpen ? "menu-open" : ""}`} aria-label="Wedding navigation">
+          <a href="#top" className="nav-brand" onClick={(e) => {
+            e.preventDefault(); setMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" });
+          }}>
+            <span className="nav-monogram">{walimaData.bride.firstName[0]}</span>
+            <span className="nav-amp">&amp;</span>
+            <span className="nav-monogram">{walimaData.groom.firstName[0]}</span>
           </a>
+          <button className="nav-menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-expanded={menuOpen} aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div className="nav-links">
+            {[['details','When & Where'],['countdown','Countdown'],['gallery','Gallery'],['story','Story'],['rsvp','RSVP']].map(([id,label]) => (
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>
+            ))}
+          </div>
         </nav>
 
         {/* Immersive Full-Bleed Hero Section */}
         {/* FIX: Dynamically inject the first image from the gallery array */}
-        <section className="hero-full-bg" style={{ backgroundImage: `url(${walimaData.gallery[0]})` }}>
+        <section id="top" className="hero-full-bg" style={{ backgroundImage: `url(${walimaData.gallery[0]})` }}>
           <RevealOnScroll className="hero-pure-content" delay={300}>
             <p className="hero-eyebrow-pure">Bismillah Hir Rahman Nir Raheem</p>
             
@@ -205,38 +404,9 @@ export default function ElegantWalima() {
           </div>
         </section>
 
-        {/* Modern Glassmorphism Interactive Grid */}
-        <section className="section">
-          <RevealOnScroll className="section-header">
-            <p className="sans-sub">The Details</p>
-            <h2 className="serif-heading">When & Where</h2>
-          </RevealOnScroll>
-          
-          <RevealOnScroll delay={100}>
-            <div className="modern-reveal-grid">
-              <ModernRevealCard 
-                icon="✿" 
-                title="The Date" 
-                mainText={walimaData.event.date} 
-                subText={walimaData.event.day} 
-              />
-              <ModernRevealCard 
-                icon="☽" 
-                title="The Time" 
-                mainText={walimaData.event.time} 
-                subText={`Arrival by ${walimaData.event.arrivalTime}`} 
-              />
-              <ModernRevealCard 
-                icon="✧" 
-                title="The Venue" 
-                mainText={walimaData.event.venue} 
-                subText={walimaData.event.address} 
-              />
-            </div>
-          </RevealOnScroll>
-        </section>
+        <SecretEventReveal />
 
-        <section className="section">
+        <section id="countdown" className="section">
           <RevealOnScroll className="section-header">
             <p className="sans-sub">Anticipation</p>
             <h2 className="serif-heading">Counting the Days</h2>
@@ -246,8 +416,11 @@ export default function ElegantWalima() {
           </RevealOnScroll>
         </section>
 
+        <SurpriseMoment />
+
+
         {/* Asymmetric Gallery Section */}
-        <section className="section">
+        <section id="gallery" className="section">
           <RevealOnScroll className="section-header">
             <p className="sans-sub">Moments</p>
             <h2 className="serif-heading">The Groom's Gallery</h2>
@@ -264,7 +437,7 @@ export default function ElegantWalima() {
         </section>
 
         {/* Our Story */}
-        <section className="section section-narrow">
+        <section id="story" className="section section-narrow">
           <RevealOnScroll className="section-header" style={{marginTop: '3rem'}}>
             <p className="sans-sub">Our Promise</p>
             <h2 className="serif-heading">Two Souls United</h2>
@@ -323,7 +496,7 @@ export default function ElegantWalima() {
         </section>
 
         {/* RSVP */}
-        <section className="section">
+        <section id="rsvp" className="section">
           <RevealOnScroll className="rsvp-section">
             <div className="section-header" style={{marginBottom: '2rem'}}>
               <p className="sans-sub">Kindly Reply</p>
