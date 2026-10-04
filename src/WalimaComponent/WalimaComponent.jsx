@@ -420,22 +420,23 @@ export default function ElegantWalima() {
 
 
         {/* Asymmetric Gallery Section */}
-        <section id="gallery" className="section">
-          <RevealOnScroll className="section-header">
-            <p className="sans-sub">Moments</p>
-            <h2 className="serif-heading">The Groom's Gallery</h2>
-          </RevealOnScroll>
-          
-          <RevealOnScroll>
-            <div className="gallery-grid">
-              <div className="gal-item gal-1"><img src={walimaData.gallery[2]} className="gal-img" alt="Couple" loading="lazy" /></div>
-              <div className="gal-item gal-2"><img src={walimaData.gallery[3]} className="gal-img" alt="Decor" loading="lazy" /></div>
-              <div className="gal-item gal-3"><img src={walimaData.gallery[1]} className="gal-img" alt="Details" loading="lazy" /></div>
-              <div className="gal-item gal-4"><img src={walimaData.gallery[2]} className="gal-img" alt="Rings" loading="lazy" /></div>
-            </div>
-          </RevealOnScroll>
-        </section>
+     <section id="gallery" className="section">
+  <RevealOnScroll className="section-header">
+    <p className="sans-sub">Moments</p>
+    <h2 className="serif-heading">The Couples Gallery</h2>
+  </RevealOnScroll>
 
+  <RevealOnScroll>
+    <div className="single-gallery">
+      <img
+        src={walimaData.gallery[0]}
+        className="single-gallery-img"
+        alt="Groom"
+        loading="lazy"
+      />
+    </div>
+  </RevealOnScroll>
+</section>
         {/* Our Story */}
         <section id="story" className="section section-narrow">
           <RevealOnScroll className="section-header" style={{marginTop: '3rem'}}>
@@ -513,9 +514,9 @@ export default function ElegantWalima() {
                 <div className="input-group">
                   <input className="rsvp-input" required placeholder="GUEST NAME(S)" />
                 </div>
-                <div className="input-group">
+                {/* <div className="input-group">
                   <input className="rsvp-input" type="email" required placeholder="EMAIL ADDRESS" />
-                </div>
+                </div> */}
                 <div className="input-group">
                   <select className="rsvp-input" required defaultValue="">
                     <option value="" disabled>WILL YOU ATTEND?</option>

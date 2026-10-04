@@ -473,7 +473,7 @@ export default function WeddingCompoent() {
             ) : (
               <form onSubmit={handleRsvpSubmit}>
                 <input required placeholder="Your name" />
-                <input required type="email" placeholder="Email address" />
+                {/* <input required type="email" placeholder="Email address" /> */}
                 <select required defaultValue="">
                   <option value="" disabled>Will you attend?</option>
                   <option>Joyfully accepts</option>
