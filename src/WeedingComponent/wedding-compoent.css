@@ -144,217 +144,528 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 45%, rgba(216, 199, 166, 0.28), transparent 38%), #e8e1d5;
-  transition: opacity 1s ease, visibility 1s ease, background 1.5s ease;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(216, 199, 166, 0.34), transparent 62%),
+    #e8e1d5;
+  transition:
+    background 1.6s ease,
+    opacity 1.2s ease,
+    visibility 1.2s ease;
 }
-
-.wedding-page .envelope-screen.is-opening-screen { background: #fdfcf9; }
 
 .wedding-page .envelope-screen::before {
   content: "";
   position: absolute;
-  inset: 18px;
-  border: 1px solid rgba(154, 128, 83, 0.28);
+  inset: 20px;
+  border: 1px solid rgba(154, 128, 83, 0.24);
   pointer-events: none;
+  z-index: -1;
+}
+
+.wedding-page .envelope-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+  transform: translateX(-120%);
+  animation: envelopeLightSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.wedding-page .envelope-screen.is-opening-screen {
+  background:
+    radial-gradient(circle at 50% 48%, #ffffff 0%, #fdfbf7 42%, #eee9df 100%);
 }
 
 .wedding-page .envelope-glow {
   position: absolute;
-  width: 420px;
-  height: 420px;
+  width: min(620px, 90vw);
+  height: min(620px, 90vw);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.7), transparent 70%);
-  filter: blur(50px);
-  animation: wedding-glowPulse 5s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(255,255,255,.86) 0%, rgba(216,199,166,.22) 35%, transparent 70%);
+  filter: blur(28px);
+  animation: envelopeGlowPulse 5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
 }
 
-@keyframes wedding-glowPulse {
-  0%, 100% { transform: scale(0.95); opacity: 0.6; }
-  50% { transform: scale(1.08); opacity: 1; }
+.wedding-page .envelope-orbit {
+  position: absolute;
+  width: min(520px, 78vw);
+  height: min(520px, 78vw);
+  border: 1px solid rgba(154, 128, 83, 0.10);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.wedding-page .orbit-one {
+  transform: rotate(25deg) scaleY(.42);
+  animation: orbitFloat 8s ease-in-out infinite;
+}
+
+.wedding-page .orbit-two {
+  transform: rotate(-25deg) scaleY(.42);
+  animation: orbitFloat 10s ease-in-out infinite reverse;
 }
 
 .wedding-page .intro-copy {
   position: absolute;
-  top: 8%;
+  top: clamp(42px, 8vh, 86px);
+  left: 20px;
+  right: 20px;
   text-align: center;
-  z-index: 2;
-  animation: wedding-introFloat 5s ease-in-out infinite;
+  z-index: 5;
+  animation: introFloat 5s ease-in-out infinite;
+  transition: opacity .65s ease, transform .65s ease;
 }
 
-@keyframes wedding-introFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+.wedding-page .intro-copy.fade-out,
+.wedding-page .tap-open.fade-out,
+.wedding-page .intro-bottom.fade-out {
+  opacity: 0;
+  transform: translateY(-18px);
+  pointer-events: none;
+}
+
+.wedding-page .intro-kicker {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(128, 107, 73, .65);
+  font-size: 8px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
 }
 
 .wedding-page .intro-copy p {
+  margin: 0 0 9px;
   color: var(--gold);
   font-size: 9px;
-  letter-spacing: 0.35em;
-  margin: 0 0 10px;
+  letter-spacing: .42em;
+  font-weight: 500;
 }
 
 .wedding-page .intro-copy h1 {
   margin: 0;
   color: #806b49;
-  font: 42px "Pinyon Script";
+  font: clamp(42px, 7vw, 58px) "Pinyon Script", cursive;
+  line-height: 1;
 }
 
-.wedding-page .intro-copy h1 span { color: #c5ae85; }
+.wedding-page .intro-copy h1 span {
+  margin: 0 8px;
+  color: #c5ae85;
+}
 
 .wedding-page .intro-copy small {
   display: block;
-  margin-top: 8px;
+  margin-top: 12px;
   color: #8c8375;
   font-size: 8px;
-  letter-spacing: 0.28em;
-}
-
-.wedding-page .intro-copy.fade-out,
-.wedding-page .tap-open.fade-out {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  letter-spacing: .28em;
+  text-transform: uppercase;
 }
 
 .wedding-page .envelope {
   position: relative;
-  width: min(410px, 78vw);
-  height: min(285px, 54vw);
+  width: min(440px, 82vw);
+  height: min(300px, 56vw);
+  margin-top: 55px;
+  padding: 0;
   border: 0;
   background: transparent;
-  perspective: 1000px;
+  perspective: 1200px;
   transform-style: preserve-3d;
-  filter: drop-shadow(0 25px 35px rgba(64, 55, 42, 0.18));
-  z-index: 3;
-  transition: transform 1s ease;
+  z-index: 4;
+  filter: drop-shadow(0 30px 38px rgba(64, 55, 42, .16));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 1.1s cubic-bezier(.2,.8,.2,1);
+}
+
+.wedding-page .envelope:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 10px;
+}
+
+.wedding-page .envelope-shadow {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: -12px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(73, 61, 43, .18);
+  filter: blur(15px);
+  transition: transform 1s ease, opacity .8s ease;
+}
+
+.wedding-page .envelope-body {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
 }
 
 .wedding-page .envelope-back,
 .wedding-page .envelope-front,
-.wedding-page .envelope-flap {
+.wedding-page .envelope-flap,
+.wedding-page .envelope-paper {
   position: absolute;
-  inset: 0;
+  display: block;
 }
 
 .wedding-page .envelope-back {
-  background: #d5c4a7;
-  border: 1px solid #bca982;
-  border-radius: 3px;
-}
-
-.wedding-page .envelope-front {
-  z-index: 4;
+  inset: 0;
+  z-index: 1;
+  border: 1px solid rgba(155, 130, 91, .6);
+  border-radius: 5px;
   background:
-    linear-gradient(32deg, transparent 49.5%, #c4b18f 50%, transparent 50.5%),
-    linear-gradient(-32deg, transparent 49.5%, #c4b18f 50%, transparent 50.5%),
-    #d9c9ad;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    linear-gradient(145deg, rgba(255,255,255,.18), transparent 35%),
+    linear-gradient(135deg, #d9c9ad, #c8b58f 50%, #d8c8aa);
+  box-shadow: inset 0 0 0 7px rgba(255,255,255,.06);
 }
 
-.wedding-page .envelope-flap {
-  z-index: 5;
-  background: #cdbb9a;
-  clip-path: polygon(0 0, 100% 0, 50% 62%);
-  transform-origin: top center;
-  transition: transform 0.9s cubic-bezier(0.65, 0, 0.25, 1);
+.wedding-page .envelope-back::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(255,255,255,.25);
+  pointer-events: none;
 }
 
 .wedding-page .envelope-paper {
-  position: absolute;
   z-index: 2;
-  width: 77%;
-  height: 83%;
-  left: 11.5%;
-  bottom: 5%;
-  padding: 12px;
+  left: 10%;
+  width: 80%;
+  height: 88%;
+  bottom: 3%;
+  padding: 11px;
   background: #fffdf8;
   border: 1px solid #e4d8c2;
-  transform: translateY(12px);
-  will-change: transform;
-  transition: transform 1.1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s;
+  box-shadow: 0 12px 28px rgba(66, 54, 38, .10);
+  transform: translateY(10px);
+  transform-origin: center bottom;
+  transition:
+    transform 1.35s cubic-bezier(.16,1,.3,1) .28s,
+    box-shadow 1s ease .28s;
 }
 
-.wedding-page .paper-content {
+.wedding-page .paper-inner {
   width: 100%;
   height: 100%;
-  border: 1px solid #e2d6c0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 1px solid #e2d6c0;
   color: var(--gold);
+  background:
+    radial-gradient(circle at center, rgba(216,199,166,.13), transparent 58%),
+    #fffdf8;
 }
 
-.wedding-page .paper-content span { font: 7px "DM Sans"; letter-spacing: 0.3em; }
-.wedding-page .paper-content h2 { font: 42px "Pinyon Script"; margin: 4px 0; line-height: 0.7; }
-.wedding-page .paper-content i { font: 22px "Pinyon Script"; color: #c8b28a; }
-.wedding-page .paper-content b { margin-top: 12px; font-size: 7px; letter-spacing: 0.2em; font-weight: 400; }
+.wedding-page .paper-kicker {
+  margin-bottom: 10px;
+  font-size: 7px;
+  letter-spacing: .34em;
+  color: #9a8053;
+}
+
+.wedding-page .paper-inner strong {
+  font: clamp(31px, 6vw, 48px) "Pinyon Script", cursive;
+  font-weight: 400;
+  line-height: .78;
+}
+
+.wedding-page .paper-inner i {
+  margin: 4px 0;
+  color: #c8b28a;
+  font: 21px "Pinyon Script", cursive;
+}
+
+.wedding-page .paper-date {
+  margin-top: 13px;
+  color: #847a6b;
+  font-size: 7px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.wedding-page .envelope-front {
+  inset: 0;
+  z-index: 4;
+  border-radius: 5px;
+  overflow: hidden;
+  background:
+    linear-gradient(31deg, transparent 49.6%, rgba(171,149,111,.58) 50%, transparent 50.4%),
+    linear-gradient(-31deg, transparent 49.6%, rgba(171,149,111,.58) 50%, transparent 50.4%),
+    linear-gradient(145deg, #d9c9ad, #cbb995);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.wedding-page .envelope-front::before,
+.wedding-page .envelope-front::after {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  bottom: -34%;
+  background: rgba(236, 222, 196, .30);
+  transform: rotate(45deg);
+}
+
+.wedding-page .envelope-front::before { left: -34%; }
+.wedding-page .envelope-front::after { right: -34%; }
+
+.wedding-page .envelope-flap {
+  inset: 0;
+  z-index: 6;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.10), transparent 50%),
+    linear-gradient(180deg, #d4c09e, #c6b18c);
+  clip-path: polygon(0 0, 100% 0, 50% 66%);
+  transform-origin: top center;
+  backface-visibility: visible;
+  transition:
+    transform 1.05s cubic-bezier(.65,0,.25,1),
+    filter .6s ease;
+  box-shadow: inset 0 -1px rgba(117, 95, 61, .18);
+}
+
+.wedding-page .flap-highlight {
+  position: absolute;
+  top: 3px;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: rgba(255,255,255,.42);
+}
 
 .wedding-page .wax-seal {
   position: absolute;
-  z-index: 8;
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
+  z-index: 9;
   left: 50%;
-  bottom: 27%;
-  transform: translate(-50%, 50%);
+  bottom: 28%;
+  width: 66px;
+  height: 66px;
   display: grid;
   place-items: center;
-  background: #92734a;
-  color: #f7edda;
-  border: 3px double #d6c198;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.14);
-  font: 22px "Pinyon Script";
-  transition: all 0.5s ease;
+  transform: translate(-50%, 50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #aa8c61, #80603b 68%);
+  box-shadow:
+    0 7px 14px rgba(65, 48, 29, .24),
+    inset 0 0 0 2px rgba(232, 210, 169, .65);
+  transition:
+    transform .7s cubic-bezier(.2,.9,.3,1),
+    opacity .45s ease,
+    filter .45s ease;
 }
 
-.wedding-page .wax-seal span { color: #ead8b7; font-size: 15px; }
+.wedding-page .seal-ring {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(243, 226, 190, .55);
+  border-radius: 50%;
+  color: #f7edda;
+  font: 20px "Pinyon Script", cursive;
+}
 
-.wedding-page .envelope.opening .wax-seal {
-  opacity: 0;
-  transform: translate(-50%, 50%) scale(0.6) rotate(20deg);
+.wedding-page .seal-ring em {
+  margin: 0 2px;
+  color: #ead8b7;
+  font: 13px "Pinyon Script", cursive;
+}
+
+.wedding-page .envelope:hover .wax-seal {
+  transform: translate(-50%, 50%) scale(1.045);
+}
+
+.wedding-page .envelope-sparkle {
+  position: absolute;
+  z-index: 12;
+  color: rgba(154,128,83,.7);
+  pointer-events: none;
+}
+
+.wedding-page .sparkle-one {
+  top: 14%;
+  left: 8%;
+  animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+.wedding-page .sparkle-two {
+  top: 27%;
+  right: 4%;
+  animation: sparkleFloat 3.5s ease-in-out .6s infinite;
+}
+
+.wedding-page .sparkle-three {
+  bottom: 7%;
+  left: 2%;
+  font-size: 10px;
+  animation: sparkleFloat 4s ease-in-out 1s infinite;
+}
+
+.wedding-page .envelope.opening {
+  transform: translateY(22px) scale(1.015);
+  pointer-events: none;
+}
+
+.wedding-page .envelope.opening .envelope-shadow {
+  transform: scaleX(.75);
+  opacity: .05;
 }
 
 .wedding-page .envelope.opening .envelope-flap {
   transform: rotateX(180deg);
+  filter: brightness(1.04);
   z-index: 1;
 }
 
 .wedding-page .envelope.opening .envelope-paper {
-  transform: translateY(-88%) scale(1.08);
-  transition: transform 1.1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s;
+  transform: translateY(-92%) scale(1.055);
+  box-shadow: 0 30px 55px rgba(62, 49, 32, .15);
   z-index: 10;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
 }
 
-.wedding-page .envelope.opening {
-  transform: translateY(25px) scale(1.02);
-  transition: transform 1s ease 0.3s;
-  pointer-events: none;
+.wedding-page .envelope.opening .wax-seal {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translate(-50%, 50%) scale(.55) rotate(18deg);
+}
+
+.wedding-page .envelope.opening .envelope-sparkle {
+  animation: sparkleBurst .9s ease-out forwards;
 }
 
 .wedding-page .tap-open {
   position: relative;
-  z-index: 5;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  margin-top: 30px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: #806b49;
-  margin-top: 30px;
   font-size: 9px;
-  letter-spacing: 0.25em;
+  letter-spacing: .24em;
   text-transform: uppercase;
-  animation: wedding-pulse 2s infinite;
+  transition: opacity .5s ease, transform .5s ease;
 }
 
 .wedding-page .tap-icon {
+  position: relative;
+  width: 26px;
+  height: 14px;
   display: block;
-  font-size: 18px;
-  margin-bottom: 2px;
 }
 
-@keyframes wedding-pulse {
-  50% { opacity: 0.45; transform: translateY(3px); }
+.wedding-page .tap-icon::before,
+.wedding-page .tap-icon::after,
+.wedding-page .tap-icon span {
+  content: "";
+  position: absolute;
+  top: 5px;
+  width: 7px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.wedding-page .tap-icon::before {
+  left: 0;
+  transform: rotate(30deg);
+}
+
+.wedding-page .tap-icon::after {
+  right: 0;
+  transform: rotate(-30deg);
+}
+
+.wedding-page .tap-icon span:first-child {
+  left: 10px;
+  width: 6px;
+  transform: rotate(90deg);
+}
+
+.wedding-page .intro-bottom {
+  position: absolute;
+  bottom: 28px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(128,107,73,.55);
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+.wedding-page .intro-bottom span {
+  width: 34px;
+  height: 1px;
+  background: rgba(154,128,83,.28);
+}
+
+.wedding-page .intro-bottom small {
+  font-size: 7px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.wedding-page .envelope-transition {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: #fffdf8;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 1s ease 1.15s, transform 1.35s cubic-bezier(.2,.8,.2,1) 1.15s;
+}
+
+.wedding-page .envelope-transition.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes envelopeLightSweep {
+  0%, 68%, 100% { transform: translateX(-120%); }
+  78% { transform: translateX(120%); }
+}
+
+@keyframes envelopeGlowPulse {
+  0%, 100% { transform: scale(.94); opacity: .65; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes introFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes orbitFloat {
+  0%, 100% { transform: rotate(25deg) scaleY(.42) translateY(0); }
+  50% { transform: rotate(25deg) scaleY(.42) translateY(-8px); }
+}
+
+@keyframes sparkleFloat {
+  0%, 100% { opacity: .25; transform: translateY(0) scale(.8); }
+  50% { opacity: 1; transform: translateY(-8px) scale(1.15); }
+}
+
+@keyframes sparkleBurst {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: translateY(-22px) scale(1.8); }
 }
 
 .wedding-page .invitation-page {
@@ -1281,5 +1592,71 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   PREMIUM ENVELOPE — MOBILE + REDUCED MOTION
+========================================================= */
+@media (max-width: 600px) {
+  .wedding-page .envelope-screen::before {
+    inset: 12px;
+  }
+
+  .wedding-page .intro-copy {
+    top: 6.5vh;
+  }
+
+  .wedding-page .intro-copy h1 {
+    font-size: clamp(38px, 12vw, 52px);
+  }
+
+  .wedding-page .envelope {
+    width: min(390px, 86vw);
+    height: min(265px, 58vw);
+    margin-top: 44px;
+  }
+
+  .wedding-page .wax-seal {
+    width: 58px;
+    height: 58px;
+  }
+
+  .wedding-page .seal-ring {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
+  }
+
+  .wedding-page .paper-inner strong {
+    font-size: clamp(27px, 9vw, 40px);
+  }
+
+  .wedding-page .paper-date {
+    max-width: 85%;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .wedding-page .tap-open {
+    margin-top: 23px;
+    font-size: 8px;
+  }
+
+  .wedding-page .intro-bottom {
+    bottom: 17px;
+  }
+
+  .wedding-page .intro-bottom small {
+    font-size: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wedding-page .envelope-screen *,
+  .wedding-page .envelope-screen::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }

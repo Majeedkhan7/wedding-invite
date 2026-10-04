@@ -1,0 +1,908 @@
+/* =========================================================
+   LUXURY ENVELOPE INTRO
+   ONLY the intro. Existing wedding page CSS is untouched.
+========================================================= */
+
+.wedding-page .luxury-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 42%, #fffefa 0%, #f8f3ea 38%, #eee5d5 100%);
+  color: #6d5a3d;
+  isolation: isolate;
+}
+
+.wedding-page .luxury-intro-bg,
+.wedding-page .luxury-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.wedding-page .luxury-grid {
+  opacity: .28;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(139,111,69,.035) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(139,111,69,.035) 50%, transparent 50.2%);
+  background-size: 90px 90px;
+  mask-image: radial-gradient(circle, black 0%, transparent 65%);
+}
+
+.wedding-page .luxury-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(163,132,83,.10);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  animation: luxuryHalo 7s ease-in-out infinite;
+}
+
+.wedding-page .halo-one {
+  width: min(680px, 130vw);
+  height: min(680px, 130vw);
+}
+
+.wedding-page .halo-two {
+  width: min(470px, 92vw);
+  height: min(470px, 92vw);
+  animation-delay: -2s;
+}
+
+.wedding-page .luxury-dust span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #a88a5e;
+  opacity: .2;
+  animation: luxuryDust 6s ease-in-out infinite;
+}
+
+.wedding-page .luxury-dust span:nth-child(1) { left: 12%; top: 23%; animation-delay: -1s; }
+.wedding-page .luxury-dust span:nth-child(2) { left: 82%; top: 19%; animation-delay: -3s; }
+.wedding-page .luxury-dust span:nth-child(3) { left: 18%; top: 75%; animation-delay: -2s; }
+.wedding-page .luxury-dust span:nth-child(4) { left: 88%; top: 72%; animation-delay: -4s; }
+.wedding-page .luxury-dust span:nth-child(5) { left: 24%; top: 48%; animation-delay: -5s; }
+.wedding-page .luxury-dust span:nth-child(6) { left: 77%; top: 46%; animation-delay: -2.5s; }
+.wedding-page .luxury-dust span:nth-child(7) { left: 42%; top: 16%; animation-delay: -1.5s; }
+.wedding-page .luxury-dust span:nth-child(8) { left: 61%; top: 84%; animation-delay: -3.5s; }
+
+/* Heading */
+.wedding-page .luxury-heading {
+  position: absolute;
+  z-index: 10;
+  top: 7.5%;
+  text-align: center;
+  pointer-events: none;
+  animation: luxuryHeadingIn 1.1s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.wedding-page .luxury-overline {
+  display: block;
+  color: #a28a66;
+  font: 500 8px "DM Sans", sans-serif;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+}
+
+.wedding-page .luxury-names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+  color: #66543a;
+  font: 400 clamp(32px, 5vw, 50px) "Cormorant Garamond", serif;
+  line-height: .9;
+}
+
+.wedding-page .luxury-names b {
+  color: #b19468;
+  font: 400 27px "Pinyon Script", cursive;
+}
+
+.wedding-page .luxury-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 11px auto 7px;
+}
+
+.wedding-page .luxury-rule i {
+  width: 35px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(157,126,78,.45));
+}
+
+.wedding-page .luxury-rule i:last-child {
+  background: linear-gradient(90deg, rgba(157,126,78,.45), transparent);
+}
+
+.wedding-page .luxury-rule span {
+  color: #a98b5d;
+  font-size: 9px;
+}
+
+.wedding-page .luxury-heading small {
+  color: #9d8b72;
+  font: 7px "DM Sans", sans-serif;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+
+/* Envelope */
+.wedding-page .luxury-envelope {
+  position: relative;
+  z-index: 20;
+  width: min(430px, 82vw);
+  aspect-ratio: 1.56 / 1;
+  margin-top: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1800px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wedding-page .luxury-envelope:focus-visible {
+  outline: 1px solid rgba(143,112,67,.5);
+  outline-offset: 14px;
+}
+
+.wedding-page .luxury-envelope:disabled {
+  cursor: default;
+}
+
+.wedding-page .luxury-envelope-shadow {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: -13%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(59,43,25,.2);
+  filter: blur(20px);
+  transition: all 1.4s ease;
+}
+
+.wedding-page .luxury-envelope-wrap {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 22px 25px rgba(65,47,26,.12));
+  transition: transform 1.4s cubic-bezier(.2,.8,.2,1);
+}
+
+/* Back sheet */
+.wedding-page .luxury-envelope-back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(122,94,54,.18);
+  border-radius: 3px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.45), transparent 35%),
+    linear-gradient(155deg, #eadcc2 0%, #d8c29e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    inset 0 -14px 22px rgba(92,65,32,.06);
+}
+
+/* Inner lining */
+.wedding-page .luxury-inner-lining {
+  position: absolute;
+  z-index: 2;
+  left: 5%;
+  right: 5%;
+  top: 4%;
+  height: 69%;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(0 0,100% 0,50% 100%);
+  background:
+    repeating-linear-gradient(45deg, rgba(115,81,40,.035) 0 2px, transparent 2px 7px),
+    #b89b70;
+  opacity: .85;
+  transition: opacity .5s ease;
+}
+
+.wedding-page .luxury-inner-lining span {
+  margin-top: -8%;
+  color: rgba(255,246,224,.65);
+  font: 26px "Pinyon Script", cursive;
+}
+
+/* Letter */
+.wedding-page .luxury-letter {
+  position: absolute;
+  z-index: 4;
+  left: 11%;
+  bottom: 5%;
+  width: 78%;
+  height: 90%;
+  display: block;
+  padding: 9px;
+  box-sizing: border-box;
+  background: #fffdf9;
+  border: 1px solid #e4d8c3;
+  box-shadow: 0 5px 14px rgba(69,48,25,.08);
+  transform: translateY(9%);
+  transform-origin: bottom center;
+  transition:
+    transform 1.35s cubic-bezier(.12,.88,.18,1) .55s,
+    box-shadow 1.1s ease .65s;
+}
+
+.wedding-page .luxury-letter-inner {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(166,133,83,.36);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #7d6544;
+}
+
+.wedding-page .luxury-letter-inner small {
+  color: #a28b68;
+  font: 7px "DM Sans", sans-serif;
+  letter-spacing: .3em;
+}
+
+.wedding-page .luxury-letter-inner strong {
+  margin: 6px 0 2px;
+  font: 400 clamp(31px, 5vw, 45px) "Pinyon Script", cursive;
+  line-height: .7;
+}
+
+.wedding-page .luxury-letter-inner em {
+  color: #b49a6f;
+  font: 400 19px "Pinyon Script", cursive;
+  font-style: normal;
+}
+
+.wedding-page .luxury-letter-date {
+  margin-top: 13px;
+  color: #a38b68;
+  font: 6px "DM Sans", sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.wedding-page .luxury-letter-ornament {
+  margin-top: 7px;
+  color: #b09568;
+  font: 13px "Pinyon Script", cursive;
+}
+
+/* Lower envelope pocket */
+.wedding-page .luxury-pocket {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  overflow: hidden;
+  clip-path: polygon(0 41%,50% 79%,100% 41%,100% 100%,0 100%);
+  background:
+    linear-gradient(135deg, transparent 49.6%, rgba(119,88,48,.15) 50%, transparent 50.4%),
+    linear-gradient(225deg, transparent 49.6%, rgba(119,88,48,.12) 50%, transparent 50.4%),
+    linear-gradient(180deg, #dfccaa, #cdb58c);
+  transform: translateZ(9px);
+  box-shadow: inset 0 10px 20px rgba(255,255,255,.1);
+}
+
+.wedding-page .pocket-bottom {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 9%;
+  height: 1px;
+  background: rgba(113,83,43,.13);
+}
+
+/* Flap */
+.wedding-page .luxury-flap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: block;
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  transition:
+    transform 1.05s cubic-bezier(.63,.04,.19,1),
+    filter .6s ease;
+}
+
+.wedding-page .flap-paper {
+  position: absolute;
+  inset: 0;
+  display: block;
+  clip-path: polygon(0 0,100% 0,50% 67%);
+  background:
+    linear-gradient(155deg, rgba(255,255,255,.4), transparent 36%),
+    linear-gradient(180deg, #ecddc4, #d2ba91);
+  border: 1px solid rgba(119,91,53,.13);
+  box-shadow: 0 5px 12px rgba(72,49,24,.07);
+  backface-visibility: hidden;
+}
+
+.wedding-page .flap-edge {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 4%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+}
+
+/* Side folds */
+.wedding-page .luxury-fold {
+  position: absolute;
+  z-index: 8;
+  top: 40%;
+  width: 53%;
+  height: 1px;
+  background: rgba(105,76,39,.17);
+  transform-origin: center;
+}
+
+.wedding-page .fold-left {
+  left: -1%;
+  transform: rotate(36.5deg);
+}
+
+.wedding-page .fold-right {
+  right: -1%;
+  transform: rotate(-36.5deg);
+}
+
+/* Wax seal */
+.wedding-page .luxury-wax {
+  position: absolute;
+  z-index: 15;
+  left: 50%;
+  top: 66%;
+  width: clamp(69px, 12vw, 88px);
+  aspect-ratio: 1;
+  border-radius: 49% 51% 47% 53%;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%,-50%);
+  background:
+    radial-gradient(circle at 31% 24%, #bda075 0%, #94764b 32%, #765832 68%, #614425 100%);
+  box-shadow:
+    0 8px 13px rgba(58,39,19,.22),
+    inset 4px 4px 7px rgba(255,255,255,.2),
+    inset -5px -6px 8px rgba(42,26,12,.2);
+  transition:
+    transform .48s cubic-bezier(.2,.9,.3,1),
+    opacity .32s ease,
+    filter .35s ease;
+}
+
+.wedding-page .wax-drip {
+  position: absolute;
+  background: #765731;
+  border-radius: 0 0 50% 50%;
+}
+
+.wedding-page .drip-one {
+  width: 12px;
+  height: 17px;
+  bottom: -5px;
+  left: 18px;
+  transform: rotate(8deg);
+}
+
+.wedding-page .drip-two {
+  width: 9px;
+  height: 12px;
+  bottom: -4px;
+  right: 20px;
+  transform: rotate(-9deg);
+}
+
+.wedding-page .drip-three {
+  width: 7px;
+  height: 9px;
+  bottom: -2px;
+  left: 40px;
+}
+
+.wedding-page .wax-inner {
+  position: relative;
+  width: 63%;
+  height: 63%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(241,222,185,.45);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(55,35,17,.12);
+}
+
+.wedding-page .wax-inner b {
+  color: #ead8b4;
+  font: 500 18px "Cormorant Garamond", serif;
+  letter-spacing: .04em;
+}
+
+.wedding-page .wax-inner b i {
+  margin: 0 2px;
+  font: 400 11px "Pinyon Script", cursive;
+}
+
+.wedding-page .wax-inner small {
+  position: absolute;
+  bottom: 6px;
+  color: rgba(242,222,184,.72);
+  font-size: 5px;
+}
+
+/* Seal fragments */
+.wedding-page .seal-fragments {
+  position: absolute;
+  z-index: 18;
+  left: 50%;
+  top: 66%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.wedding-page .seal-fragments i {
+  position: absolute;
+  display: block;
+  width: 5px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8a6940;
+  opacity: 0;
+}
+
+.wedding-page .seal-fragments i:nth-child(1) { transform: rotate(20deg); }
+.wedding-page .seal-fragments i:nth-child(2) { transform: rotate(80deg); }
+.wedding-page .seal-fragments i:nth-child(3) { transform: rotate(140deg); }
+.wedding-page .seal-fragments i:nth-child(4) { transform: rotate(200deg); }
+.wedding-page .seal-fragments i:nth-child(5) { transform: rotate(260deg); }
+.wedding-page .seal-fragments i:nth-child(6) { transform: rotate(320deg); }
+
+/* Hint */
+.wedding-page .envelope-hint {
+  position: absolute;
+  z-index: 25;
+  left: 50%;
+  bottom: -22%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  color: #8f7958;
+  font: 7px "DM Sans", sans-serif;
+  letter-spacing: .23em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: luxuryHint 2.3s ease-in-out infinite;
+  transition: opacity .35s ease, transform .4s ease;
+}
+
+.wedding-page .hint-line {
+  width: 24px;
+  height: 1px;
+  background: rgba(143,121,88,.34);
+}
+
+/* Bottom */
+.wedding-page .luxury-bottom-note {
+  position: absolute;
+  bottom: 5.5%;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #ad9878;
+  font: 7px "DM Sans", sans-serif;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  animation: luxuryHeadingIn 1.3s .25s both;
+}
+
+.wedding-page .luxury-bottom-note i {
+  color: #b29667;
+  font-style: normal;
+}
+
+/* Stage 1: seal release */
+.wedding-page .luxury-intro.stage-1 .luxury-wax {
+  animation: luxurySealBreak .5s cubic-bezier(.2,.9,.3,1) forwards;
+}
+
+.wedding-page .luxury-intro.stage-1 .seal-fragments i {
+  animation: luxuryFragment .65s ease-out forwards;
+}
+
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(1) { animation-delay: 0s; }
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(2) { animation-delay: .02s; }
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(3) { animation-delay: .04s; }
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(4) { animation-delay: .06s; }
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(5) { animation-delay: .08s; }
+.wedding-page .luxury-intro.stage-1 .seal-fragments i:nth-child(6) { animation-delay: .1s; }
+
+/* Stage 2: flap */
+.wedding-page .luxury-intro.stage-2 .luxury-flap,
+.wedding-page .luxury-intro.stage-3 .luxury-flap,
+.wedding-page .luxury-intro.stage-4 .luxury-flap {
+  transform: rotateX(180deg);
+}
+
+.wedding-page .luxury-intro.stage-2 .luxury-wax,
+.wedding-page .luxury-intro.stage-3 .luxury-wax,
+.wedding-page .luxury-intro.stage-4 .luxury-wax {
+  opacity: 0;
+  transform: translate(-50%,-50%) scale(.45) rotate(25deg);
+}
+
+/* Stage 3: card rises */
+.wedding-page .luxury-intro.stage-3 .luxury-letter,
+.wedding-page .luxury-intro.stage-4 .luxury-letter {
+  transform: translateY(-61%) scale(1.045);
+  box-shadow: 0 28px 55px rgba(67,46,24,.17);
+}
+
+.wedding-page .luxury-intro.stage-3 .luxury-envelope-wrap {
+  transform: translateY(4px);
+}
+
+/* Stage 4: card becomes the transition */
+.wedding-page .luxury-intro.stage-4 .luxury-envelope-wrap {
+  transform: translateY(-4%) scale(1.25);
+  opacity: .85;
+}
+
+.wedding-page .luxury-intro.stage-4 .luxury-letter {
+  transform: translateY(-12%) scale(1.23);
+  z-index: 30;
+}
+
+.wedding-page .luxury-intro.stage-4 .envelope-hint,
+.wedding-page .luxury-intro.stage-4 .luxury-bottom-note {
+  opacity: 0;
+}
+
+.wedding-page .luxury-intro.stage-4 .luxury-reveal-light {
+  animation: luxuryRevealLight .9s ease-out forwards;
+}
+
+.wedding-page .luxury-intro.stage-4 .luxury-whiteout {
+  animation: luxuryWhiteout 1.1s ease 0.25s forwards;
+}
+
+/* Animations */
+@keyframes luxuryHeadingIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes luxuryHalo {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .6; }
+  50% { transform: translate(-50%,-50%) scale(1.035); opacity: 1; }
+}
+
+@keyframes luxuryDust {
+  0%,100% { transform: translateY(0); opacity: .12; }
+  50% { transform: translateY(-17px); opacity: .5; }
+}
+
+@keyframes luxuryHint {
+  0%,100% { opacity: .48; transform: translate(-50%,0); }
+  50% { opacity: 1; transform: translate(-50%,4px); }
+}
+
+@keyframes luxurySealBreak {
+  0% { transform: translate(-50%,-50%) scale(1) rotate(0); opacity: 1; }
+  30% { transform: translate(-50%,-50%) scale(1.1) rotate(-5deg); }
+  100% { transform: translate(-50%,-50%) scale(.45) rotate(28deg); opacity: 0; filter: blur(2px); }
+}
+
+@keyframes luxuryFragment {
+  0% {
+    opacity: 0;
+    transform: translate(-50%,-50%) rotate(var(--r, 0deg)) translateY(0) scale(.4);
+  }
+  20% { opacity: .9; }
+  100% {
+    opacity: 0;
+    transform: translate(-50%,-50%) rotate(var(--r, 0deg)) translateY(-42px) scale(1);
+  }
+}
+
+.wedding-page .seal-fragments i:nth-child(1) { --r: 0deg; }
+.wedding-page .seal-fragments i:nth-child(2) { --r: 60deg; }
+.wedding-page .seal-fragments i:nth-child(3) { --r: 120deg; }
+.wedding-page .seal-fragments i:nth-child(4) { --r: 180deg; }
+.wedding-page .seal-fragments i:nth-child(5) { --r: 240deg; }
+.wedding-page .seal-fragments i:nth-child(6) { --r: 300deg; }
+
+@keyframes luxuryRevealLight {
+  0% { opacity: 0; transform: scale(.4); }
+  45% { opacity: .7; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes luxuryWhiteout {
+  0% { opacity: 0; }
+  45% { opacity: .98; }
+  100% { opacity: 1; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .wedding-page .luxury-heading {
+    top: 7%;
+  }
+
+  .wedding-page .luxury-overline {
+    font-size: 6px;
+    letter-spacing: .32em;
+  }
+
+  .wedding-page .luxury-names {
+    gap: 9px;
+    font-size: 33px;
+  }
+
+  .wedding-page .luxury-names b {
+    font-size: 22px;
+  }
+
+  .wedding-page .luxury-heading small {
+    font-size: 6px;
+  }
+
+  .wedding-page .luxury-envelope {
+    width: 86vw;
+    margin-top: 34px;
+  }
+
+  .wedding-page .luxury-wax {
+    width: 67px;
+  }
+
+  .wedding-page .luxury-letter-inner strong {
+    font-size: 31px;
+  }
+
+  .wedding-page .luxury-letter-date {
+    font-size: 5px;
+  }
+
+  .wedding-page .envelope-hint {
+    bottom: -25%;
+    font-size: 6px;
+    letter-spacing: .15em;
+  }
+
+  .wedding-page .luxury-bottom-note {
+    bottom: 4%;
+    font-size: 5px;
+    letter-spacing: .15em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wedding-page .luxury-halo,
+  .wedding-page .luxury-dust span,
+  .wedding-page .envelope-hint {
+    animation: none;
+  }
+}
+
+
+/* =========================================================
+   COMPLETE INVITATION RISE — INTRO ONLY
+   ========================================================= */
+.luxury-intro { perspective: 1400px; overflow: hidden; }
+
+.rising-invitation {
+  position: absolute;
+  z-index: 40;
+  left: 50%;
+  bottom: -112vh;
+  width: min(88vw, 560px);
+  height: min(82vh, 760px);
+  transform: translateX(-50%) rotateX(10deg) scale(.94);
+  transform-origin: 50% 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    bottom 1.25s cubic-bezier(.16,1,.3,1),
+    width 1s cubic-bezier(.16,1,.3,1),
+    height 1s cubic-bezier(.16,1,.3,1),
+    transform 1.35s cubic-bezier(.16,1,.3,1),
+    opacity .55s ease;
+  filter: drop-shadow(0 30px 55px rgba(0,0,0,.28));
+}
+
+.rising-invitation-paper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px 30px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,.99), rgba(248,243,235,.98) 62%, rgba(228,219,205,.98));
+  border: 1px solid rgba(103,82,58,.24);
+  box-shadow:
+    inset 0 0 0 8px rgba(255,255,255,.45),
+    inset 0 0 0 9px rgba(103,82,58,.08);
+  color: #3d3329;
+}
+
+.rising-invitation-paper::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgba(122,96,66,.2);
+  pointer-events: none;
+}
+
+.rising-invitation-paper::after {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.8), transparent 68%);
+  pointer-events: none;
+}
+
+.rising-top-ornament,
+.rising-bottom-ornament {
+  position: relative;
+  z-index: 2;
+  font-size: 22px;
+  opacity: .7;
+}
+.rising-top-ornament { margin-bottom: 26px; }
+.rising-bottom-ornament { margin-top: 28px; }
+
+.rising-kicker {
+  position: relative;
+  z-index: 2;
+  font: 500 10px/1.4 "Montserrat", sans-serif;
+  letter-spacing: .36em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+.rising-invitation-paper h2 {
+  position: relative;
+  z-index: 2;
+  margin: 24px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: 400 clamp(40px,7vw,68px)/.92 "Cormorant Garamond", serif;
+}
+
+.rising-invitation-paper h2 span {
+  font: italic 400 28px/1 "Alex Brush", cursive;
+  margin: 5px 0;
+}
+
+.rising-divider {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(250px,70%);
+  margin: 8px 0 22px;
+}
+
+.rising-divider i {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg,transparent,rgba(90,70,50,.5));
+}
+.rising-divider i:last-child {
+  background: linear-gradient(90deg,rgba(90,70,50,.5),transparent);
+}
+.rising-divider b {
+  font: 18px "Cormorant Garamond", serif;
+  font-weight: 400;
+}
+
+.rising-invitation-paper p {
+  position: relative;
+  z-index: 2;
+  max-width: 300px;
+  margin: 0 0 16px;
+  font: 400 14px/1.8 "Cormorant Garamond", serif;
+}
+
+.rising-invitation-paper > strong {
+  position: relative;
+  z-index: 2;
+  font: 500 17px/1.4 "Montserrat", sans-serif;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.rising-location {
+  position: relative;
+  z-index: 2;
+  margin-top: 12px;
+  font: 400 12px/1.5 "Montserrat", sans-serif;
+  letter-spacing: .08em;
+  opacity: .7;
+}
+
+.stage-3 .rising-invitation,
+.stage-4 .rising-invitation {
+  bottom: 9vh;
+  opacity: 1;
+  transform: translateX(-50%) rotateX(0deg) scale(1);
+}
+
+.stage-4 .rising-invitation {
+  bottom: 0;
+  width: min(100vw, 900px);
+  height: 100vh;
+  transform: translateX(-50%) scale(1.035);
+  filter: none;
+}
+
+.stage-4 .rising-invitation-paper {
+  border: 0;
+  box-shadow: none;
+}
+
+.stage-4 .luxury-envelope,
+.stage-4 .luxury-heading,
+.stage-4 .luxury-bottom-note {
+  opacity: 0;
+  transform: scale(.82) translateY(-8vh);
+  transition: opacity .45s ease, transform .8s cubic-bezier(.16,1,.3,1);
+}
+
+@media (max-width:600px) {
+  .rising-invitation {
+    width: 92vw;
+    height: 78vh;
+  }
+  .stage-3 .rising-invitation { bottom: 6vh; }
+  .stage-4 .rising-invitation {
+    width: 100vw;
+    height: 100vh;
+  }
+  .rising-invitation-paper { padding: 42px 22px; }
+  .rising-invitation-paper::before { inset: 15px; }
+  .rising-invitation-paper h2 {
+    font-size: clamp(42px,14vw,62px);
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .rising-invitation { transition: opacity .2s ease; }
+  .stage-3 .rising-invitation,
+  .stage-4 .rising-invitation {
+    transform: translateX(-50%);
+  }
+}
