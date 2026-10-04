@@ -8,6 +8,7 @@
     "lastName": "Rahman"
   },
   "audioUrl": "/music/wedding-music.mp3",
+  "audioUrl1": "/music/saiyara.mp3",
   "event": {
     "isoDate": "2026-10-24T18:00:00Z",
     "date": "October 24th, 2026",

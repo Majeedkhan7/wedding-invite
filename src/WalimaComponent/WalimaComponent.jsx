@@ -156,7 +156,7 @@ export default function ElegantWalima() {
 
       {/* Hidden Audio Element */}
       <audio ref={audioRef} loop preload="auto">
-        <source src={walimaData.audioUrl} type="audio/mpeg" />
+        <source src={walimaData.audioUrl1} type="audio/mpeg" />
       </audio>
 
       {/* Floating Audio Toggle Button */}
